@@ -15,30 +15,26 @@ function run(){
     var program_counter = 0;
 
     while(stack.length > 0){
-        code = text_area.value.split("\n");
+        code = functions[stack[stack.length - 1]].split("\n");
 
-        for(var i = 0; i < code.length; i++){
-            // Remove all whitespaces in the line
-            code[i] = code[i].replace(/\s/g,'');
-
-            inst = getUnicodeAt(code[i], 0);
-
+        while(code[program_counter]){
+            inst = getUnicodeAt(code[program_counter], 0);
             switch(inst){
                 // cpy
                 case "🐱":
                     // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[i], 2, 2);
+                    dest = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(dest){
                         // Converts dest to base 10
                         dest = parseInt(convert_from_radix(dest, 12), 12);
 
                         // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[i], 6, 2);
+                        src_test = getUnicodesAt(code[program_counter], 6, 2);
 
                         if(src_test == "🐺🐺"){
                             // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[i], 10, 8);
+                            src = getUnicodesAt(code[program_counter], 10, 8);
 
                             if(src){
                                 // Converts src to base 10
@@ -66,7 +62,7 @@ function run(){
                 // raw
                 case "🦌":
                     // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[i], 2, 2);
+                    src = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(src){
                         // Converts src to base 10
@@ -84,7 +80,7 @@ function run(){
                 // out
                 case "🦉":
                     // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[i], 2, 2);
+                    src = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(src){
                         // Converts src to base 10
@@ -102,18 +98,18 @@ function run(){
                 // add
                 case "🍎":
                     // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[i], 2, 2);
+                    dest = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(dest){
                         // Converts dest to base 10
                         dest = parseInt(convert_from_radix(dest, 12), 12);
 
                         // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[i], 6, 2);
+                        src_test = getUnicodesAt(code[program_counter], 6, 2);
 
                         if(src_test == "🐺🐺"){
                             // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[i], 10, 8);
+                            src = getUnicodesAt(code[program_counter], 10, 8);
 
                             if(src){
                                 // Converts src to base 10
@@ -141,18 +137,18 @@ function run(){
                 // sub
                 case "🐧":
                     // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[i], 2, 2);
+                    dest = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(dest){
                         // Converts dest to base 10
                         dest = parseInt(convert_from_radix(dest, 12), 12);
 
                         // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[i], 6, 2);
+                        src_test = getUnicodesAt(code[program_counter], 6, 2);
 
                         if(src_test == "🐺🐺"){
                             // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[i], 10, 8);
+                            src = getUnicodesAt(code[program_counter], 10, 8);
 
                             if(src){
                                 // Converts src to base 10
@@ -180,7 +176,7 @@ function run(){
                 // rnd
                 case "🦋":
                     // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[i], 2, 2);
+                    src = getUnicodesAt(code[program_counter], 2, 2);
 
                     if(src){
                         // Converts src to base 10
@@ -195,10 +191,11 @@ function run(){
 
                     program_counter++;
                     break;
+                default:
+                    program_counter++;
             }
         }
-
-        return;
+        stack.pop();
     }
 }
 
@@ -278,4 +275,6 @@ function get_functions(){
             }
         }
     }
+
+    return functions;
 }
