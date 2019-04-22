@@ -23,7 +23,7 @@ The table below are the instruction sets and its corresponding Unicode character
 Example Programs:
 -----------------
 
-####Hello world
+#### Hello world
 ```
 🐰
 🐱🐰🐰🐺🐺🐟🐰
@@ -49,11 +49,12 @@ Example Programs:
 🐺
 ```
 
-#####To do:
+##### To do:
 * make a good UI for this thing
 * implement o12bit using o12bit
 * probably implement this too in C
 * finish this readme
 
-#####Word from the creator:
+##### Word from the creator:
+
 idk why i'm making this
