@@ -82,6 +82,37 @@ function run(){
 
                     program_counter[program_counter.length - 1]++;
                     break;
+                // dp
+                case "🐟":
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            if(line.params[1]){
+                                if(line.params[1].type == "register"){
+                                    if(registers[line.params[1].char]){
+                                        registers[line.params[0].char] = registers[registers[line.params[1].char]];
+                                    }
+                                    else{
+                                        //error
+                                    }
+                                }
+                                else{
+                                    //error
+                                }
+                            }
+                            else{
+                                //error
+                            }
+                        }
+                        else{
+                            //error
+                        }
+                    }
+                    else{
+                        //error;
+                    }
+
+                    program_counter[program_counter.length - 1]++;
+                    break;
                 // add
                 case "🍎":
                     if(line.params[0]){
@@ -161,6 +192,7 @@ function run(){
             }
         }
         stack.pop();
+        program_counter.pop();
     }
 }
 

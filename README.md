@@ -13,7 +13,7 @@ The table below are the instruction sets and its corresponding Unicode character
  3       | ~~je~~      |  U+1F438   | 🐸
  4       | raw         |  U+1F98C   | 🦌
  5       | out         |  U+1F989   | 🦉
- 6       | ~~jne~~     |  U+1F41F   | 🐟
+ 6       | dp          |  U+1F41F   | 🐟
  7       | ~~itr~~     |  U+1F987   | 🦇
  8       | add         |  U+1F34E   | 🍎
  9       | sub         |  U+1F427   | 🐧

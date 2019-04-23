@@ -24,6 +24,14 @@ function replace(event){
 
         event.preventDefault();
     }
+    else if(key == "Backspace" && event.target.id == "base_12"){
+        var pos = event.target.selectionStart;
+        event.target.value = event.target.value.substr(0, pos - 2) + event.target.value.substr(event.target.selectionEnd);
+        event.target.selectionStart = pos;
+        event.target.selectionEnd = event.target.selectionStart;
+
+        base_10_text.value = parseInt(convert_from_radix(event.target.value, 12), 12);
+    }
 }
 
 function update_base_10_to_12(event){
