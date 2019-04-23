@@ -15,10 +15,8 @@ function run(){
     var program_counter = [0];
 
     while(stack.length > 0){
-        code = functions[stack[stack.length - 1]].split("\n");
-
-        while(code[program_counter[program_counter.length - 1]]){
-            line = parse_line(code[program_counter[program_counter.length - 1]]);
+        while(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]){
+            line = parse_line(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]);
 
             switch(line.inst){
                 // cpy
@@ -49,6 +47,54 @@ function run(){
                     }
 
                     program_counter[program_counter.length - 1]++;
+                    break;
+                // je
+                case "🐸":
+                    program_counter[program_counter.length - 1]++;
+
+                    if(line.params[0]){
+                        if(functions[line.params[0].char]){
+                            if(line.params[1]){
+                                if(line.params[1].type == "register"){
+                                    if(line.params[2]){
+                                        var val = "";
+                                        if(line.params[2].type == "register"){
+                                            val = registers[line.params[2].char];
+                                        }
+                                        else if(line.params[2].type == "number"){
+                                            val = line.params[2].char;
+                                        }
+                                        else{
+                                            //error
+                                        }
+
+                                        if(registers[line.params[1].char] == val){
+                                            program_counter.push(0);
+
+                                            stack.push(line.params[0].char);
+                                            break;
+                                        }
+                                        else{
+                                            //error
+                                        }
+                                    }
+                                    else{
+                                        //error
+                                    }
+                                }
+                                else{
+                                    //error
+                                }
+                            }
+                            else{
+                                //error
+                            }
+                        }
+                        else{
+                            //error
+                        }
+                    }
+
                     break;
                 // raw
                 case "🦌":

@@ -10,7 +10,7 @@ The table below are the instruction sets and its corresponding Unicode character
  0       | def         |  U+1F430   | 🐰
  1       | cpy         |  U+1F431   | 🐱
  2       | ~~in~~      |  U+1F54A   | 🕊
- 3       | ~~je~~      |  U+1F438   | 🐸
+ 3       | je          |  U+1F438   | 🐸
  4       | raw         |  U+1F98C   | 🦌
  5       | out         |  U+1F989   | 🦉
  6       | dp          |  U+1F41F   | 🐟
