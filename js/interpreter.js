@@ -12,187 +12,152 @@ function run(){
 
     var stack = [0];
     var in_loop = 0;
-    var program_counter = 0;
+    var program_counter = [0];
 
     while(stack.length > 0){
         code = functions[stack[stack.length - 1]].split("\n");
 
-        while(code[program_counter]){
-            inst = getUnicodeAt(code[program_counter], 0);
-            switch(inst){
+        while(code[program_counter[program_counter.length - 1]]){
+            line = parse_line(code[program_counter[program_counter.length - 1]]);
+
+            switch(line.inst){
                 // cpy
                 case "🐱":
-                    // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(dest){
-                        // Converts dest to base 10
-                        dest = parseInt(convert_from_radix(dest, 12), 12);
-
-                        // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[program_counter], 6, 2);
-
-                        if(src_test == "🐺🐺"){
-                            // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[program_counter], 10, 8);
-
-                            if(src){
-                                // Converts src to base 10
-                                src = parseInt(convert_from_radix(src, 12), 12);
-
-                                registers[dest] = src;
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            if(line.params[1]){
+                                if(line.params[1].type == "register"){
+                                    registers[line.params[0].char] = registers[line.params[1].char];
+                                }
+                                else if(line.params[1].type == "number"){
+                                    registers[line.params[0].char] = line.params[1].char;
+                                }
+                                else{
+                                    //error
+                                }
+                            }
+                            else{
+                                //error
                             }
                         }
                         else{
-                            if(src_test){
-                                // Converts src_test to base 10
-                                src_test = parseInt(convert_from_radix(src_test, 12), 12);
-
-                                registers[dest] = registers[src_test];
-                            }
+                            //error
                         }
                     }
                     else{
-                        // Return false, cpy requires a register as the first parameter
-                        return errors.syntax[1];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 // raw
                 case "🦌":
-                    // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(src){
-                        // Converts src to base 10
-                        src = parseInt(convert_from_radix(src, 12), 12);
-
-                        output.value += String.fromCharCode(registers[src]);
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            output.value += String.fromCharCode(registers[line.params[0].char]);
+                        }
+                        else if(line.params[0].type == "number"){
+                            output.value += String.fromCharCode(line.params[0].char);
+                        }
                     }
                     else{
-                        // Return false, out requires a register as the first parameter
-                        return errors.syntax[2];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 // out
                 case "🦉":
-                    // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(src){
-                        // Converts src to base 10
-                        src = parseInt(convert_from_radix(src, 12), 12);
-
-                        output.value += registers[src];
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            output.value += registers[line.params[0].char];
+                        }
+                        else if(line.params[0].type == "number"){
+                            output.value += line.params[0].char;
+                        }
                     }
                     else{
-                        // Return false, out requires a register as the first parameter
-                        return errors.syntax[3];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 // add
                 case "🍎":
-                    // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(dest){
-                        // Converts dest to base 10
-                        dest = parseInt(convert_from_radix(dest, 12), 12);
-
-                        // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[program_counter], 6, 2);
-
-                        if(src_test == "🐺🐺"){
-                            // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[program_counter], 10, 8);
-
-                            if(src){
-                                // Converts src to base 10
-                                src = parseInt(convert_from_radix(src, 12), 12);
-
-                                registers[dest] += src;
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            if(line.params[1]){
+                                if(line.params[1].type == "register"){
+                                    registers[line.params[0].char] += registers[line.params[1].char];
+                                }
+                                else if(line.params[1].type == "number"){
+                                    registers[line.params[0].char] += line.params[1].char;
+                                }
+                                else{
+                                    //error
+                                }
+                            }
+                            else{
+                                //error
                             }
                         }
                         else{
-                            if(src_test){
-                                // Converts src_test to base 10
-                                src_test = parseInt(convert_from_radix(src_test, 12), 12);
-
-                                registers[dest] += registers[src_test];
-                            }
+                            //error
                         }
                     }
                     else{
-                        // Return false, out requires a register as the first parameter
-                        return errors.syntax[4];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 // sub
                 case "🐧":
-                    // Gets the 2nd and 3rd unicode as destination and check if it exists
-                    dest = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(dest){
-                        // Converts dest to base 10
-                        dest = parseInt(convert_from_radix(dest, 12), 12);
-
-                        // Gets the 4th and 5th unicode and check if it is a number (starts with 🐺🐺) or a register
-                        src_test = getUnicodesAt(code[program_counter], 6, 2);
-
-                        if(src_test == "🐺🐺"){
-                            // Gets the 6th to 13th unicode (8 chars) as source and check if it exists
-                            src = getUnicodesAt(code[program_counter], 10, 8);
-
-                            if(src){
-                                // Converts src to base 10
-                                src = parseInt(convert_from_radix(src, 12), 12);
-
-                                registers[dest] -= src;
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            if(line.params[1]){
+                                if(line.params[1].type == "register"){
+                                    registers[line.params[0].char] -= registers[line.params[1].char];
+                                }
+                                else if(line.params[1].type == "number"){
+                                    registers[line.params[0].char] -= line.params[1].char;
+                                }
+                                else{
+                                    //error
+                                }
+                            }
+                            else{
+                                //error
                             }
                         }
                         else{
-                            if(src_test){
-                                // Converts src_test to base 10
-                                src_test = parseInt(convert_from_radix(src_test, 12), 12);
-
-                                registers[dest] -= registers[src_test];
-                            }
+                            //error
                         }
                     }
                     else{
-                        // Return false, out requires a register as the first parameter
-                        return errors.syntax[4];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 // rnd
                 case "🦋":
-                    // Gets the 2nd and 3rd unicode as source and check if it exists
-                    src = getUnicodesAt(code[program_counter], 2, 2);
-
-                    if(src){
-                        // Converts src to base 10
-                        src = parseInt(convert_from_radix(src, 12), 12);
-
-                        registers[src] = Math.floor(Math.random() * 12 + 1);
+                    if(line.params[0]){
+                        if(line.params[0].type == "register"){
+                            registers[line.params[0].char] = Math.floor(Math.random() * 12 + 1);
+                        }
+                        else{
+                            //error
+                        }
                     }
                     else{
-                        // Return false, rnd requires a register as the first parameter
-                        return errors.syntax[3];
+                        //error;
                     }
 
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
                     break;
                 default:
-                    program_counter++;
+                    program_counter[program_counter.length - 1]++;
             }
         }
         stack.pop();
@@ -277,4 +242,31 @@ function get_functions(){
     }
 
     return functions;
+}
+
+function parse_line(code){
+    var line = {};
+
+    line.inst = getUnicodeAt(code, 0);
+    line.params = [];
+
+    for (var i = 2; i < code.length; i += 4) {
+        var param = {}
+
+        param.char = getUnicodesAt(code, i, 2);
+        param.type = "register";
+
+        if(param.char == "🐺🐺"){
+            param.char = getUnicodesAt(code, i + 4, 8);
+            param.type = "number";
+
+            i += 16;
+        }
+
+        param.char = parseInt(convert_from_radix(param.char, 12), 12);
+
+        line.params.push(param);
+    }
+
+    return line;
 }

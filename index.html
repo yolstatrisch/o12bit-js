@@ -2,14 +2,23 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="css/index.css">
         <title></title>
     </head>
-    <body>
-        <textarea id="code" placeholder="Put your code here" autofocus></textarea>
-        <textarea id="console" placeholder="not here" disabled></textarea>
-        <button id="run">Run</button>
-        <input type="text" id="base_10" placeholder="0">
-        <input type="text" id="base_12" placeholder="🐰">
+    <body class="flex flex-ttb">
+        <div id="header" class="flex flex-ltr">
+            <button id="run">Run</button>
+        </div>
+        <div id="content" class="flex flex-ltr">
+            <div id="editor" class="flex flex-ttb">
+                <textarea id="code" placeholder="Put your code here" autofocus></textarea>
+                <textarea id="console" placeholder="not here" disabled></textarea>
+            </div>
+            <div id="sidebar" class="flex flex-ttb">
+                <input type="text" id="base_10" placeholder="0">
+                <input type="text" id="base_12" placeholder="🐰">
+            </div>
+        </div>
     </body>
     <footer>
         <script src="js/error.js" charset="utf-8"></script>

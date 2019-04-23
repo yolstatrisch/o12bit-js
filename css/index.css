@@ -1,0 +1,51 @@
+body{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+textarea{
+    resize: none;
+}
+
+.flex{
+    border: 0;
+    padding: 0;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.flex-ltr{
+    flex-direction: row;
+}
+
+.flex-ttb{
+    flex-direction: column;
+}
+
+#header{
+    height: 10vh;
+}
+
+#content{
+    height: 90vh;
+    width: 100%;
+}
+
+#editor{
+    width: 80%;
+}
+
+#code{
+    height: 80%;
+}
+
+#console{
+    height: 20%;
+}
+
+#sidebar{
+    width: 20%;
+}
