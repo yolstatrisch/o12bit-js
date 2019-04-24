@@ -177,7 +177,7 @@ async function run(){
                     break;
                 case "🐺":
                     if(in_loop.length > 0){
-                        program_counter[program_counter.length - 1] = in_loop[in_loop.length - 1];
+                        program_counter[program_counter.length - 1] = in_loop.pop();
                     }
                     else{
                         //error
