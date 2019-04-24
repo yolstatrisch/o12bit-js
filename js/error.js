@@ -1,6 +1,10 @@
 const errors = {
-    "syntax" : ["Unexpected end of function",
-                "cpy requires a register as the first parameter",
-                "raw requires a register as the first parameter",
-                "out requires a register as the first parameter"]
+    unknown : {
+        inst : "Unknown instruction"
+    },
+    params : {
+        incorrect_type : "Incorrect type for param ",
+        required_param : "Required param ",
+        unexpected_param: "Unexpected param "
+    }
 };

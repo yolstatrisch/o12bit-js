@@ -34,18 +34,18 @@ textarea{
     width: 100%;
 }
 
-#editor{
+.w80{
     width: 80%;
 }
 
-#code{
+.w20{
+    width: 20%;
+}
+
+.h80{
     height: 80%;
 }
 
-#console{
+.h20{
     height: 20%;
-}
-
-#sidebar{
-    width: 20%;
 }

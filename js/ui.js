@@ -4,10 +4,24 @@ const run_btn = document.getElementById('run');
 const base_10_text = document.getElementById('base_10');
 const base_12_text = document.getElementById('base_12');
 
+const input = document.getElementById('input');
+const send = document.getElementById('send');
+
 text_area.addEventListener('keydown', replace);
+input.addEventListener('keydown', replace);
+base_12_text.addEventListener('keydown', replace);
+
 base_10_text.addEventListener('input', update_base_10_to_12);
 
-base_12_text.addEventListener('keydown', replace);
+function getInput() {
+    return new Promise((resolve, reject) => {
+        send.onclick = function(){
+            input.disabled = true;
+            send.disabled = true;
+            resolve(parseInt(convert_from_radix(input.value, 12), 12));
+        };
+    });
+};
 
 function replace(event){
     var key = event.key;

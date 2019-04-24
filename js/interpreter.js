@@ -1,8 +1,34 @@
 run_btn.addEventListener('click', run);
 
-function run(){
+function check_params(line){
+    for(var i = 0; i < params[line.inst].length; i++){
+        if(line.params[i]){
+            if(params[line.inst][i] & param_key[line.params[i].type]){
+                continue;
+            }
+            else{
+                return errors.params.incorrect_type + i;
+            }
+        }
+        else{
+            return errors.params.required_param + "for instruction " + line.inst;
+        }
+    }
+
+    if(line.params.length == params[line.inst].length){
+        return true;
+    }
+    else{
+        return errors.params.unexpected_param + "for instruction " + line.inst;
+    }
+}
+
+async function run(){
     // Clear the output
     output.value = "";
+
+    input.disabled = true;
+    send.disabled = true;
 
     const register_width = 2;
     const register_cnt = Math.pow(12, register_width);
@@ -11,40 +37,49 @@ function run(){
     var functions = get_functions();
 
     var stack = [0];
-    var in_loop = 0;
+    var in_loop = [];
+    var exit_loop = false;
     var program_counter = [0];
 
     while(stack.length > 0){
         while(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]){
             line = parse_line(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]);
+            out = check_params(line);
+
+            if(out != true){
+                output.value += out + " at line " + program_counter[program_counter.length - 1];
+                return false;
+            }
+
+            if(exit_loop){
+                if(line.inst == "🐺"){
+                    exit_loop = false;
+                }
+                program_counter[program_counter.length - 1]++;
+            }
 
             switch(line.inst){
                 // cpy
                 case "🐱":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            if(line.params[1]){
-                                if(line.params[1].type == "register"){
-                                    registers[line.params[0].char] = registers[line.params[1].char];
-                                }
-                                else if(line.params[1].type == "number"){
-                                    registers[line.params[0].char] = line.params[1].char;
-                                }
-                                else{
-                                    //error
-                                }
-                            }
-                            else{
-                                //error
-                            }
-                        }
-                        else{
-                            //error
-                        }
+                    if(line.params[1].type == "register"){
+                        registers[line.params[0].char] = registers[line.params[1].char];
                     }
-                    else{
-                        //error;
+                    else if(line.params[1].type == "number"){
+                        registers[line.params[0].char] = line.params[1].char;
                     }
+
+                    program_counter[program_counter.length - 1]++;
+                    break;
+                // in
+                case "🕊":
+                    input.value = "";
+                    input.disabled = false;
+                    send.disabled = false;
+                    input.focus();
+
+                    in_value = await getInput();
+
+                    registers[line.params[0].char] = in_value;
 
                     program_counter[program_counter.length - 1]++;
                     break;
@@ -52,186 +87,101 @@ function run(){
                 case "🐸":
                     program_counter[program_counter.length - 1]++;
 
-                    if(line.params[0]){
-                        if(functions[line.params[0].char]){
-                            if(line.params[1]){
-                                if(line.params[1].type == "register"){
-                                    if(line.params[2]){
-                                        var val = "";
-                                        if(line.params[2].type == "register"){
-                                            val = registers[line.params[2].char];
-                                        }
-                                        else if(line.params[2].type == "number"){
-                                            val = line.params[2].char;
-                                        }
-                                        else{
-                                            //error
-                                        }
+                    var val = "";
+                    if(line.params[2].type == "register"){
+                        val = registers[line.params[2].char];
+                    }
+                    else if(line.params[2].type == "number"){
+                        val = line.params[2].char;
+                    }
 
-                                        if(registers[line.params[1].char] == val){
-                                            program_counter.push(0);
+                    if(registers[line.params[1].char] == val){
+                        program_counter.push(0);
 
-                                            stack.push(line.params[0].char);
-                                            break;
-                                        }
-                                        else{
-                                            //error
-                                        }
-                                    }
-                                    else{
-                                        //error
-                                    }
-                                }
-                                else{
-                                    //error
-                                }
-                            }
-                            else{
-                                //error
-                            }
-                        }
-                        else{
-                            //error
-                        }
+                        stack.push(line.params[0].char);
+                        break;
                     }
 
                     break;
                 // raw
                 case "🦌":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            output.value += String.fromCharCode(registers[line.params[0].char]);
-                        }
-                        else if(line.params[0].type == "number"){
-                            output.value += String.fromCharCode(line.params[0].char);
-                        }
+                    if(line.params[0].type == "register"){
+                        output.value += String.fromCharCode(registers[line.params[0].char]);
                     }
-                    else{
-                        //error;
+                    else if(line.params[0].type == "number"){
+                        output.value += String.fromCharCode(line.params[0].char);
                     }
 
                     program_counter[program_counter.length - 1]++;
                     break;
                 // out
                 case "🦉":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            output.value += registers[line.params[0].char];
-                        }
-                        else if(line.params[0].type == "number"){
-                            output.value += line.params[0].char;
-                        }
+                    if(line.params[0].type == "register"){
+                        output.value += registers[line.params[0].char];
                     }
-                    else{
-                        //error;
+                    else if(line.params[0].type == "number"){
+                        output.value += line.params[0].char;
                     }
 
                     program_counter[program_counter.length - 1]++;
                     break;
                 // dp
                 case "🐟":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            if(line.params[1]){
-                                if(line.params[1].type == "register"){
-                                    if(registers[line.params[1].char]){
-                                        registers[line.params[0].char] = registers[registers[line.params[1].char]];
-                                    }
-                                    else{
-                                        //error
-                                    }
-                                }
-                                else{
-                                    //error
-                                }
-                            }
-                            else{
-                                //error
-                            }
-                        }
-                        else{
-                            //error
-                        }
+                    if(registers[line.params[1].char]){
+                        registers[line.params[0].char] = registers[registers[line.params[1].char]];
                     }
                     else{
-                        //error;
+                        //error
+                    }
+
+                    program_counter[program_counter.length - 1]++;
+                    break;
+                // itr
+                case "🦇":
+                    if(registers[line.params[0].char] != 0){
+                        in_loop.push(program_counter[program_counter.length - 1]);
+                    }
+                    else{
+                        exit_loop = true;
                     }
 
                     program_counter[program_counter.length - 1]++;
                     break;
                 // add
                 case "🍎":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            if(line.params[1]){
-                                if(line.params[1].type == "register"){
-                                    registers[line.params[0].char] += registers[line.params[1].char];
-                                }
-                                else if(line.params[1].type == "number"){
-                                    registers[line.params[0].char] += line.params[1].char;
-                                }
-                                else{
-                                    //error
-                                }
-                            }
-                            else{
-                                //error
-                            }
-                        }
-                        else{
-                            //error
-                        }
+                    if(line.params[1].type == "register"){
+                        registers[line.params[0].char] += registers[line.params[1].char];
                     }
-                    else{
-                        //error;
+                    else if(line.params[1].type == "number"){
+                        registers[line.params[0].char] += line.params[1].char;
                     }
 
                     program_counter[program_counter.length - 1]++;
                     break;
                 // sub
                 case "🐧":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            if(line.params[1]){
-                                if(line.params[1].type == "register"){
-                                    registers[line.params[0].char] -= registers[line.params[1].char];
-                                }
-                                else if(line.params[1].type == "number"){
-                                    registers[line.params[0].char] -= line.params[1].char;
-                                }
-                                else{
-                                    //error
-                                }
-                            }
-                            else{
-                                //error
-                            }
-                        }
-                        else{
-                            //error
-                        }
+                    if(line.params[1].type == "register"){
+                        registers[line.params[0].char] -= registers[line.params[1].char];
                     }
-                    else{
-                        //error;
+                    else if(line.params[1].type == "number"){
+                        registers[line.params[0].char] -= line.params[1].char;
                     }
 
                     program_counter[program_counter.length - 1]++;
                     break;
                 // rnd
                 case "🦋":
-                    if(line.params[0]){
-                        if(line.params[0].type == "register"){
-                            registers[line.params[0].char] = Math.floor(Math.random() * 12 + 1);
-                        }
-                        else{
-                            //error
-                        }
-                    }
-                    else{
-                        //error;
-                    }
+                    registers[line.params[0].char] = Math.floor(Math.random() * 12 + 1);
 
                     program_counter[program_counter.length - 1]++;
+                    break;
+                case "🐺":
+                    if(in_loop.length > 0){
+                        program_counter[program_counter.length - 1] = in_loop[in_loop.length - 1];
+                    }
+                    else{
+                        //error
+                    }
                     break;
                 default:
                     program_counter[program_counter.length - 1]++;
