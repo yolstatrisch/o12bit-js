@@ -56,6 +56,7 @@ async function run(){
                     exit_loop = false;
                 }
                 program_counter[program_counter.length - 1]++;
+                continue;
             }
 
             switch(line.inst){
