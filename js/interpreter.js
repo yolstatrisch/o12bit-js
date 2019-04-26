@@ -1,28 +1,5 @@
 run_btn.addEventListener('click', run);
 
-function check_params(line){
-    for(var i = 0; i < params[line.inst].length; i++){
-        if(line.params[i]){
-            if(params[line.inst][i] & param_key[line.params[i].type]){
-                continue;
-            }
-            else{
-                return errors.params.incorrect_type + i;
-            }
-        }
-        else{
-            return errors.params.required_param + "for instruction " + line.inst;
-        }
-    }
-
-    if(line.params.length == params[line.inst].length){
-        return true;
-    }
-    else{
-        return errors.params.unexpected_param + "for instruction " + line.inst;
-    }
-}
-
 async function run(){
     // Clear the output
     output.value = "";
@@ -41,7 +18,12 @@ async function run(){
     var exit_loop = false;
     var program_counter = [0];
 
-    while(stack.length > 0){
+    if(typeof functions == "string"){
+        output.value += functions;
+        return false;
+    }
+
+    while(stack.length > 0 && functions[stack[stack.length - 1]]){
         while(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]){
             line = parse_line(functions[stack[stack.length - 1]].split("\n")[program_counter[program_counter.length - 1]]);
             out = check_params(line);
@@ -80,6 +62,10 @@ async function run(){
 
                     in_value = await getInput();
 
+                    if(isNaN(in_value)){
+                        in_value = 0;
+                    }
+
                     registers[line.params[0].char] = in_value;
 
                     program_counter[program_counter.length - 1]++;
@@ -106,11 +92,20 @@ async function run(){
                     break;
                 // raw
                 case "🦌":
+                    var val = "";
+
                     if(line.params[0].type == "register"){
-                        output.value += String.fromCharCode(registers[line.params[0].char]);
+                        val = registers[line.params[0].char];
                     }
                     else if(line.params[0].type == "number"){
-                        output.value += String.fromCharCode(line.params[0].char);
+                        val = line.params[0].char;
+                    }
+                    try{
+                        output.value += String.fromCodePoint(val);
+                    }
+                    catch{
+                        output.value += errors.stdout.out_of_range + " at line " + program_counter[program_counter.length - 1];
+                        return false;
                     }
 
                     program_counter[program_counter.length - 1]++;
@@ -128,8 +123,8 @@ async function run(){
                     break;
                 // dp
                 case "🐟":
-                    if(registers[line.params[1].char]){
-                        registers[line.params[0].char] = registers[registers[line.params[1].char]];
+                    if(registers[line.params[0].char]){
+                        registers[registers[line.params[0].char]] = registers[line.params[1].char];
                     }
                     else{
                         //error
@@ -254,7 +249,7 @@ function get_functions(){
             }
             else{
                 // Return false, unexpected end of function
-                return errors.syntax[0];
+                return errors.unknown.unexpected_eof;
             }
         }
         else{
@@ -273,6 +268,18 @@ function get_functions(){
     return functions;
 }
 
+/*
+ * parse_line()
+ *
+ * Parses the line and returns a dictionary of the form
+ * dict = {
+ *      inst: "",                   // Unicode character of the instruction
+ *      params: [{                  // List of parameters
+ *          char: "",               // Base 12 representation of the parameter
+ *          type: ""                // Parameter type {"register", "number"}
+ *      }, ...]
+ * }
+ */
 function parse_line(code){
     var line = {};
 
@@ -298,4 +305,32 @@ function parse_line(code){
     }
 
     return line;
+}
+
+/*
+ * check_params()
+ *
+ * Returns a string of the error found in the line, returns true if no error is found
+ */
+function check_params(line){
+    for(var i = 0; i < params[line.inst].length; i++){
+        if(line.params[i]){
+            if(params[line.inst][i] & param_key[line.params[i].type]){
+                continue;
+            }
+            else{
+                return errors.params.incorrect_type + i;
+            }
+        }
+        else{
+            return errors.params.required_param + "for instruction " + line.inst;
+        }
+    }
+
+    if(line.params.length == params[line.inst].length){
+        return true;
+    }
+    else{
+        return errors.params.unexpected_param + "for instruction " + line.inst;
+    }
 }

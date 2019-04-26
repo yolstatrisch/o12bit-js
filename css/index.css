@@ -6,6 +6,7 @@ body{
 
 textarea{
     resize: none;
+    font-size: 2em;
 }
 
 .flex{

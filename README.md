@@ -1,11 +1,19 @@
 o12bit
 ======
 
-o12bit (pronunciation: /ˈɔːbɪt/) is a 12-instruction set esoteric programming language where function names, variable names, numbers, and instructions are duodecimal in nature i.e. using these 12 Unicode characters: 🐰🐱🕊🐸🦌🦉🐟🦇🍎🐧🦋🐺.
+o12bit (pronunciation: /ˈɔːbɪt/) is a 12-instruction set esoteric programming language where function names, register names, numbers, and instructions are duodecimal in nature i.e. using these 12 Unicode characters: 🐰🐱🕊🐸🦌🦉🐟🦇🍎🐧🦋🐺.
 
 The interpreter is available for testing here: https://yolstatrisch.github.io/o12bit-js/
 
-The table below are the instruction sets and its corresponding Unicode character. Instructions that are scratched out are yet to be implemented:
+Language definition
+---
+
+This section is explained in detail here: https://github.com/yolstatrisch/o12bit-js/blob/master/LANG_DEF.md
+
+Quick reference
+---
+
+The table below are the instruction sets and its corresponding Unicode character:
 
  Base 12 | Instruction | Code Point | Character
 :------- |:----------- |:---------- |:---------:
@@ -51,11 +59,28 @@ Example Programs:
 🐺
 ```
 
-##### To do:
-* make a good UI for this thing
-* implement o12bit using o12bit
-* probably implement this too in C
-* finish this readme
+#### Lucas Numbers
+
+This program outputs the first 24 Lucas Numbers
+```
+🐰
+🐱🐱🐱🐺🐺🕊🍎
+🐱🐰🐰🐺🐺🕊
+🐱🐰🐱🐺🐺🐱
+🐱🐰🕊🐺🐺🐱🐺
+🦉🐰🐰
+🦌🐱🐱
+🦇🐰🕊
+🍎🐰🐰🐰🐱
+🐱🐰🐸🐰🐰
+🐱🐰🐰🐰🐱
+🐱🐰🐱🐰🐸
+🦉🐰🐰
+🦌🐱🐱
+🐧🐰🕊🐺🐺🐱
+🐺
+🐺
+```
 
 ##### Word from the creator:
 
