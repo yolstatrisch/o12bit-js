@@ -1,4 +1,4 @@
-registerLanguage definition
+Language definition
 ---
 
 ### The program
