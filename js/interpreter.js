@@ -1,6 +1,7 @@
 run_btn.addEventListener('click', run);
 
 async function run(){
+    time = Date.now() / 1000;
     // Clear the output
     output.value = "";
 
@@ -186,6 +187,8 @@ async function run(){
         stack.pop();
         program_counter.pop();
     }
+
+    output.value += ((output.value == "") ? "" : "\n") + "---\nProgram finished executing in " + ((Date.now() / 1000) - time).toFixed(2) + " second(s)";
 }
 
 /*

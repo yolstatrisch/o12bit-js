@@ -5,22 +5,24 @@
         <link rel="stylesheet" href="css/index.css">
         <title></title>
     </head>
-    <body class="flex flex-ttb">
-        <div id="header" class="flex flex-ltr">
-            <button id="run">Run</button>
-        </div>
-        <div id="content" class="flex flex-ltr">
-            <div id="editor" class="flex flex-ttb w80">
-                <textarea id="code" class="h80" placeholder="Put your code here" autofocus></textarea>
-                <textarea id="console" class="h20" placeholder="not here" disabled></textarea>
-                <div class="flex flex-ltr">
-                    <input id="input" class="w80" type="text" placeholder="" disabled>
-                    <button id="send" class="w20" disabled>Send</button>
-                </div>
+    <body>
+        <div id="main" class="flex flex-ttb">
+            <div id="header" class="flex flex-ltr">
+                <button id="run">&#x25B6;&#xFE0E; Run</button>
             </div>
-            <div id="sidebar" class="flex flex-ttb w20">
-                <input type="text" id="base_10" placeholder="0">
-                <input type="text" id="base_12" placeholder="🐰">
+            <div id="content" class="flex flex-ltr">
+                <div id="editor" class="flex flex-ltr w100 h100">
+                    <textarea id="code" class="w80 h100" placeholder="Put your code here" autofocus></textarea>
+                    <div id="sidebar" class="flex flex-ttb w20">
+                        <textarea id="console" class="h80" placeholder="o12bit 1.0c interpreter" disabled></textarea>
+                        <input id="input" class="h20" type="text" placeholder="" disabled>
+                        <button id="send" disabled>Send</button>
+                    </div>
+                </div>
+                <div id="" class="flex flex-ttb w20" style="display: none">
+                    <input type="text" id="base_10" placeholder="0">
+                    <input type="text" id="base_12" placeholder="🐰">
+                </div>
             </div>
         </div>
     </body>

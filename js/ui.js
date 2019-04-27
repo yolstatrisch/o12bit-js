@@ -46,6 +46,9 @@ function replace(event){
 
         base_10_text.value = parseInt(convert_from_radix(event.target.value, 12), 12);
     }
+    else if(key == "Enter" && event.target.id == "input"){
+        send.onclick();
+    }
 }
 
 function update_base_10_to_12(event){
