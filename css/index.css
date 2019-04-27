@@ -1,12 +1,38 @@
-body{
-    margin: 0;
+html, body{
+    margin-top: 0;
+    margin-bottom: 0;
     border: 0;
     padding: 0;
+    height: 100%;
+
+    background-color: #16161d;
+}
+
+textarea, input, button{
+    border-color: #c0c0c0;
+    border-radius: 5px;
+
+    background-color: transparent;
+    font-size: 2em;
+    color: #deded0;
 }
 
 textarea{
     resize: none;
-    font-size: 2em;
+}
+
+textarea:focus, input:focus, button:hover{
+    border-color: #f97502;
+}
+
+button:hover{
+    color: #f97502;
+}
+
+input:disabled, button:disabled{
+    background-color: #101018;
+    border-color: #808088;
+    color: #50505a;
 }
 
 .flex{
@@ -14,8 +40,8 @@ textarea{
     padding: 0;
 
     display: flex;
-    align-content: center;
-    justify-content: center;
+    align-content: stretch;
+    justify-content: space-between;
 }
 
 .flex-ltr{
@@ -27,11 +53,24 @@ textarea{
 }
 
 #header{
-    height: 10vh;
+    height: 6vh;
 }
 
 #content{
-    height: 90vh;
+    height: 93vh;
+    width: 100%;
+}
+
+#sidebar{
+    height: 93.5vh;
+}
+
+#run{
+    display: inline-flex;
+    align-items: center;
+}
+
+.w100{
     width: 100%;
 }
 
@@ -41,6 +80,10 @@ textarea{
 
 .w20{
     width: 20%;
+}
+
+.h100{
+    height: 100%;
 }
 
 .h80{
