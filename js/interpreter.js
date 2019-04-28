@@ -104,7 +104,7 @@ async function run(){
                     try{
                         output.value += String.fromCodePoint(val);
                     }
-                    catch{
+                    catch(e){
                         output.value += errors.stdout.out_of_range + " at line " + program_counter[program_counter.length - 1];
                         return false;
                     }
