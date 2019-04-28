@@ -6,7 +6,7 @@
     #code{
         width: 100%;
     }
-    
+
     #sidebar{
         width: 100.5%;
     }
@@ -19,6 +19,9 @@ html, body{
     padding: 0;
     height: 100%;
 
+    font-family: Ubuntu, cursive;
+
+    color: #deded0;
     background-color: #16161d;
 }
 
@@ -82,6 +85,26 @@ input:disabled, button:disabled{
 #run{
     display: inline-flex;
     align-items: center;
+    width: auto;
+}
+
+#i{
+    font-size: 2em;
+
+    justify-content: flex-start;
+}
+
+#icon{
+    padding-right: 5px;
+
+    height: 100%;
+    width: auto;
+}
+
+#name{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .w100{
