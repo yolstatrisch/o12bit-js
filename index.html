@@ -3,11 +3,15 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/index.css">
-        <title></title>
+        <link rel="icon" href="assets/icon.png">
+        <title>o12bit JS interpreter</title>
     </head>
     <body>
         <div id="main" class="flex flex-ttb">
             <div id="header" class="flex flex-ltr">
+                <div id="i" class="flex">
+                    <img id="icon" src="assets/icon.png"><div id="name" class="flex flex-ttb">o12bit</div>
+                </div>
                 <button id="run">&#x25B6;&#xFE0E; Run</button>
             </div>
             <div id="content" class="flex flex-ltr">
@@ -30,6 +34,7 @@
         <script src="js/error.js" charset="utf-8"></script>
         <script src="js/helper.js" charset="utf-8"></script>
         <script src="js/ui.js" charset="utf-8"></script>
+        <script src="js/parser.js" charset="utf-8"></script>
         <script src="js/interpreter.js" charset="utf-8"></script>
     </footer>
 </html>
