@@ -30,7 +30,7 @@ async function run(){
             out = check_params(line);
 
             if(out != true){
-                output.value += out + " at line " + program_counter[program_counter.length - 1];
+                output.value += out + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
                 return false;
             }
 
@@ -105,7 +105,7 @@ async function run(){
                         output.value += String.fromCodePoint(val);
                     }
                     catch(e){
-                        output.value += errors.stdout.out_of_range + " at line " + program_counter[program_counter.length - 1];
+                        output.value += errors.stdout.out_of_range + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
                         return false;
                     }
 
@@ -316,24 +316,29 @@ function parse_line(code){
  * Returns a string of the error found in the line, returns true if no error is found
  */
 function check_params(line){
-    for(var i = 0; i < params[line.inst].length; i++){
-        if(line.params[i]){
-            if(params[line.inst][i] & param_key[line.params[i].type]){
-                continue;
+    if(params[line.inst]){
+        for(var i = 0; i < params[line.inst].length; i++){
+            if(line.params[i]){
+                if(params[line.inst][i] & param_key[line.params[i].type]){
+                    continue;
+                }
+                else{
+                    return errors.params.incorrect_type + i;
+                }
             }
             else{
-                return errors.params.incorrect_type + i;
+                return errors.params.required_param + "for instruction " + line.inst;
             }
         }
+
+        if(line.params.length == params[line.inst].length){
+            return true;
+        }
         else{
-            return errors.params.required_param + "for instruction " + line.inst;
+            return errors.params.unexpected_param + "for instruction " + line.inst;
         }
     }
-
-    if(line.params.length == params[line.inst].length){
-        return true;
-    }
     else{
-        return errors.params.unexpected_param + "for instruction " + line.inst;
+        return errors.unknown.inst + " " + line.inst;
     }
 }
