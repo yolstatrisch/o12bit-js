@@ -19,6 +19,8 @@ async function run(){
     time = Date.now() / 1000;
     // Clear the output
     output.value = "";
+    sidebar.style.display = "";
+    toolbar.style.display = "none";
 
     input.disabled = true;
     send.disabled = true;
