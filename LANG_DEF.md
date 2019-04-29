@@ -82,7 +82,7 @@ The `out` instruction outputs the value of the parameter as a number.
 
 #### 🐟 dp/data pointer
 
-###### Syntax: 🐟[register_name][register_name]
+###### Syntax: 🐟[register_name][🐺🐺][register_name]
 
 The `dp` instruction copies the value of the 2nd parameter to the register pointed at the 1st parameter. For example, in this piece of code:
 
@@ -95,6 +95,16 @@ The `dp` instruction copies the value of the 2nd parameter to the register point
 ```
 
 The 2nd and 3rd line sets the value of registers `🐰🐱` and `🐟🦉` to `🐺🐺🦉🦉`(Number: 32) and `🐺🐺🍎🐰`(Number: 96) respectively. In the 4th line, there is a `dp` instruction. This means that the value of the 1st parameter (The parameter in this case is `🐰🐱` and its value is `🦉🦉`) is treated as a register. Therefore the value of the 2nd parameter, `🐺🐺🍎🐰` is copied to register `🦉🦉` instead of `🐰🐱`.
+
+If however there's a `🐺🐺` in between the two registers, the instruction is flipped and instead will copy the value of the register pointed at the 2nd parameter to the 1st parameter. So in the code below, the final value of `🐰🐱` would be 104 because `🐰🐱` copies the value of the register pointed at `🐟🦉`.
+
+```
+🐰
+🐱🐟🦉🐺🐺🍎🐰
+🐱🍎🐰🐺🐺🐰🐸
+🐟🐰🐱🐺🐺🐟🦉
+🐺
+```
 
 #### 🦇 itr/iterate
 

@@ -122,7 +122,7 @@ async function run(){
                         output.value += String.fromCodePoint(val);
                     }
                     catch(e){
-                        output.value += errors.stdout.out_of_range + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
+                        output.value += errors.out_of_range.stdout + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
                         return false;
                     }
 
@@ -141,11 +141,23 @@ async function run(){
                     break;
                 // dp
                 case "🐟":
-                    if(registers[line.params[0].char]){
-                        registers[registers[line.params[0].char]] = registers[line.params[1].char];
+                    if(line.params[1].type == "register"){
+                        if(registers[line.params[0].char] < 143 && registers[line.params[0].char] >= 0){
+                            registers[registers[line.params[0].char]] = registers[line.params[1].char];
+                        }
+                        else{
+                            output.value += errors.out_of_range.data_pointer + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
+                            return false;
+                        }
                     }
-                    else{
-                        //error
+                    else if(line.params[1].type == "number"){
+                        if(line.params[1].char < 143 && line.params[0].char >= 0){
+                            registers[line.params[0].char] = registers[registers[line.params[1].char]];
+                        }
+                        else{
+                            output.value += errors.out_of_range.data_pointer + " at function " + stack[stack.length - 1] + " line " + program_counter[program_counter.length - 1];
+                            return false;
+                        }
                     }
 
                     program_counter[program_counter.length - 1]++;
