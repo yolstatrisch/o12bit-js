@@ -8,7 +8,8 @@ const errors = {
         required_param : "Required param ",
         unexpected_param : "Unexpected param "
     },
-    stdout : {
-        out_of_range : "Code point is out of range"
+    out_of_range : {
+        stdout : "Code point is out of range",
+        data_pointer: "Data pointer is out of range"
     }
 };
