@@ -12,7 +12,10 @@
                 <div id="i" class="flex">
                     <img id="icon" src="assets/icon.png"><div id="name" class="flex flex-ttb">o12bit</div>
                 </div>
-                <button id="run">&#x25B6;&#xFE0E; Run</button>
+                <div style="align-self:center">
+                    <button id="toggle">&#9776;&#xFE0E; Toolbar</button>
+                    <button id="run">&#x25B6;&#xFE0E; Run</button>
+                </div>
             </div>
             <div id="content" class="flex flex-ltr">
                 <div id="editor" class="flex w100 h100">
@@ -22,10 +25,10 @@
                         <input id="input" class="h20" type="text" placeholder="" disabled>
                         <button id="send" disabled>Send</button>
                     </div>
-                </div>
-                <div id="" class="flex flex-ttb w20" style="display: none">
-                    <input type="text" id="base_10" placeholder="0">
-                    <input type="text" id="base_12" placeholder="🐰">
+                    <div id="toolbar" class="flex flex-ttb w20" style="display: none">
+                        <input type="text" class="h80" id="base_10" placeholder="0">
+                        <input type="text" class="h80" id="base_12" placeholder="🐰">
+                    </div>
                 </div>
             </div>
         </div>

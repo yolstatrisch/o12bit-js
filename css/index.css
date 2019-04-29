@@ -7,7 +7,7 @@
         width: 100%;
     }
 
-    #sidebar{
+    #sidebar, #toolbar{
         width: 100.5%;
     }
 }
@@ -78,7 +78,7 @@ input:disabled, button:disabled{
     width: 100%;
 }
 
-#sidebar{
+#sidebar, #toolbar{
     height: 93.5vh;
 }
 
@@ -96,8 +96,9 @@ input:disabled, button:disabled{
 
 #icon{
     padding-right: 5px;
+    align-self: center;
 
-    height: 100%;
+    height: 80%;
     width: auto;
 }
 

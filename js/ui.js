@@ -1,11 +1,21 @@
 const text_area = document.getElementById('code');
 const output = document.getElementById('console');
+
+const sidebar = document.getElementById('sidebar');
+const toolbar = document.getElementById('toolbar');
+
 const run_btn = document.getElementById('run');
+const toggle_btn = document.getElementById('toggle');
+
 const base_10_text = document.getElementById('base_10');
 const base_12_text = document.getElementById('base_12');
 
 const input = document.getElementById('input');
 const send = document.getElementById('send');
+
+var toggle_status = false;
+
+toggle_btn.addEventListener('click', toggle);
 
 text_area.addEventListener('keydown', replace);
 input.addEventListener('keydown', replace);
@@ -13,7 +23,20 @@ base_12_text.addEventListener('keydown', replace);
 
 base_10_text.addEventListener('input', update_base_10_to_12);
 
-function getInput() {
+function toggle(){
+    if(toggle_status){
+        sidebar.style.display = "";
+        toolbar.style.display = "none";
+    }
+    else{
+        toolbar.style.display = "";
+        sidebar.style.display = "none";
+    }
+
+    toggle_status = !toggle_status;
+}
+
+function getInput(){
     return new Promise((resolve, reject) => {
         send.onclick = function(){
             input.disabled = true;
