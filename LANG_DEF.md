@@ -73,7 +73,7 @@ The `jmp` instruction calls the function if the register in the 2nd parameter is
 
 The `raw` instruction outputs the value of the parameter as a character. The value of the parameter must be a code point.
 
-#### 🦉ke up earl out/output
+#### 🦉 out/output
 
 ###### Syntax: 🦉[register_name|number]
 
