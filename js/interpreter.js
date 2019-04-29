@@ -22,6 +22,8 @@ async function run(){
     sidebar.style.display = "";
     toolbar.style.display = "none";
 
+    toggle_status = false;
+
     input.disabled = true;
     send.disabled = true;
 
